@@ -21,10 +21,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //Method get fetch data in db show
 Route::get('products', [ProductController::class , 'index']); 
+
 //Method post to insert data to db
 Route::post('product', [ProductController::class, 'store']);
+
 //Method Put to update data in db
-Route::put('product/{id}', [ProductController::class, 'update']);
+//but in this have image can't use method put to update
+//because method put can't get data from formdata 
+//if use not has image can't use method put to update data in raw
+Route::post('product/{id}', [ProductController::class, 'update']);
+
 //Method delete to delete data in db
 Route::delete('product/{id}', [ProductController::class, 'destroy']);
 
