@@ -70,6 +70,16 @@ class ProductController extends Controller
     //delete data in db
     public function destroy($id) {
         $product = Product::find($id);
+        //check if not have id=null
+        if($product == null){
+           return response()->json(['message' => 'Product not found!'],404);
+        }
+
+        //check if images exists delete
+        $image = public_path('/images/'.$product->image);
+        if(file_exists($image)){
+            unlink($image);
+        }
         $product -> delete();
         return response()->json(['data' => $product],200);
     }

@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Middleware\EnsureTokenIsValid;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,11 +21,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Method get fetch data in db show
-Route::get('products', [ProductController::class , 'index']); 
+
+//protect with token access
+Route::middleware('auth:api')->group( function () {
+    //Method get fetch data in db show
+    Route::get('products', [ProductController::class , 'index']);
+});
+
 
 //Method post to insert data to db
-Route::post('product', [ProductController::class, 'store']);
+Route::post('product', [ProductController::class, 'store'])-> middleware(EnsureTokenIsValid::class);
+
 
 //Method Put to update data in db
 //but in this have image can't use method put to update
@@ -34,6 +42,10 @@ Route::post('product/{id}', [ProductController::class, 'update']);
 //Method delete to delete data in db
 Route::delete('product/{id}', [ProductController::class, 'destroy']);
 
+
+
+//Route For Users
+Route::post('auth/register',[AuthController::class, 'register']);
 
 
 
