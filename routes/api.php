@@ -23,14 +23,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 //protect with token access
-Route::middleware('auth:api')->group( function () {
+Route::middleware('auth:api')->group(function () {
     //Method get fetch data in db show
-    Route::get('products', [ProductController::class , 'index']);
+    Route::get('products', [ProductController::class, 'index']);
 });
 
 
 //Method post to insert data to db
-Route::post('product', [ProductController::class, 'store'])-> middleware(EnsureTokenIsValid::class);
+Route::post('product', [ProductController::class, 'store'])->middleware(EnsureTokenIsValid::class);
 
 
 //Method Put to update data in db
@@ -44,8 +44,12 @@ Route::delete('product/{id}', [ProductController::class, 'destroy']);
 
 
 
-//Route For Users
-Route::post('auth/register',[AuthController::class, 'register']);
+//Route For Users register
+Route::post('auth/register', [AuthController::class, 'register']);
+
+
+//Login
+Route::post('auth/login', [AuthController::class, 'login']);
 
 
 
@@ -55,12 +59,12 @@ Route::post('auth/register',[AuthController::class, 'register']);
 
 //check connection db with mysql
 use Illuminate\Support\Facades\DB;
-Route::get('/check-db-connection', function(){
-   try {
-    DB::connection()->getPdo();
-    echo "Connected Successfully to: ".DB::connection()->getDatabaseName();
 
-   } catch (\Exception $e) {
-    die("Could not connect to database, Please check your Configuration. error:".$e);
-   }
+Route::get('/check-db-connection', function () {
+    try {
+        DB::connection()->getPdo();
+        echo "Connected Successfully to: " . DB::connection()->getDatabaseName();
+    } catch (\Exception $e) {
+        die("Could not connect to database, Please check your Configuration. error:" . $e);
+    }
 });
